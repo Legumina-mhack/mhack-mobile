@@ -1,12 +1,12 @@
 import {Stack, useRouter} from "expo-router";
-import {SafeAreaView, ScrollView, StyleSheet, View} from "react-native";
+import {ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, View} from "react-native";
 import {CardHeader} from "@app/components/CardHeader";
 import {CardBody} from "@app/components/CardBody";
 import {FormHeader} from "@app/components/FormHeader";
 import {FormControl} from "@app/components/FormControl";
 import {StyledButton} from "@app/components/StyledButton";
-import {useState} from "react";
-import {Issue} from "@app/components/Issue";
+import React, {useState} from "react";
+import {fetchProductsFaults} from "@app/tools/api";
 
 const apiMock = [
     {reason: 'Krótki czas działania słuchawek po naładowaniu baterii', count: 4},
@@ -14,16 +14,34 @@ const apiMock = [
     {reason: 'Awaria przewodu ładowania', count: 1},
 ]
 
-export default function CheckProduct() {
+export default function ProductCheck() {
     const router = useRouter()
+
+    const [loading, setLoading] = useState(false)
 
     const [form, setForm] = useState({
         name: '',
-        model: '',
-        manufacture: '',
     })
 
+    // const [data, setData] = useState<any[] | null>(null)
+
     const onFormChange = (partialForm: Partial<typeof form>) => setForm({...form, ...partialForm})
+
+    const onSubmit = async () => {
+        setLoading(true)
+        try {
+            const data = await fetchProductsFaults(form.name)
+            router.replace({
+                pathname: '/product-list', params: {
+                    product: form.name,
+                    data: JSON.stringify(data)
+                }
+            })
+        } catch (e) {
+            console.log(e.response.data)
+        }
+        setLoading(false)
+    }
 
     return (
         <>
@@ -39,17 +57,20 @@ export default function CheckProduct() {
                         <CardBody>
                             <FormHeader>Nazwa produktu</FormHeader>
                             <FormControl value={form.name} onChange={(name) => onFormChange({name})}/>
-                            <FormHeader>Model</FormHeader>
-                            <FormControl value={form.model} onChange={(model) => onFormChange({model})}/>
-                            <FormHeader>Wytwórca</FormHeader>
-                            <FormControl value={form.manufacture}
-                                         onChange={(manufacture) => onFormChange({manufacture})}/>
-                            <FormHeader>Najczęściej zgłaszane nieprawidłowości</FormHeader>
-                            {apiMock.map((data, index) => (
-                                <Issue key={index} reason={data.reason} count={data.count}/>
-                            ))}
+                            {/*{data && (data.length > 0 ? (*/}
+                            {/*    <>*/}
+                            {/*        <FormHeader>Najczęściej zgłaszane nieprawidłowości</FormHeader>*/}
+                            {/*        {data.map((data, index) => (*/}
+                            {/*            <Issue key={index} reason={data.reason} count={data.count}/>*/}
+                            {/*        ))}*/}
+                            {/*    </>*/}
+                            {/*) : (*/}
+                            {/*    <FormError>Brak informacji o produkcie</FormError>*/}
+                            {/*))}*/}
                         </CardBody>
-                        <StyledButton variant={'blue'}>Szukaj</StyledButton>
+                        <StyledButton variant={'blue'} onClick={onSubmit}>
+                            {loading ? <ActivityIndicator style={{}} size="small" color="#fff"/> : 'Szukaj'}
+                        </StyledButton>
                         <StyledButton variant={'outline-blue'} onClick={() => router.back()}>Wróć</StyledButton>
                     </View>
                 </ScrollView>

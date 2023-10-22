@@ -2,6 +2,7 @@ import axios from "axios";
 
 const GET_PRESIGNED_URLS = (strings: TemplateStringsArray, num: number) => `/media/report/upload/${num}`
 const CREATE_ISSUE = `/report/create`
+export const GET_PRODUCTS_FAULTS = (strings: TemplateStringsArray, product: string) => encodeURI(`/report/list/products/${product}`)
 
 const request = axios.create({
     baseURL: 'http://172.22.151.63:3000/'
@@ -54,5 +55,20 @@ export type CreateIssueResponse = {
 
 export const createIssue = async (req: CreateIssueRequest) => {
     const response = await request.post<CreateIssueResponse>(CREATE_ISSUE, req)
+    return response.data;
+}
+
+export type FetchProductsFaultsResponse = {
+    "name": string,
+    "href": string,
+    "decisionDate": string,
+    "ean": string,
+    "decisionDescription": string,
+    "model": string,
+    "type": string
+}[]
+
+export const fetchProductsFaults = async (product: string) => {
+    const response = await request.get<FetchProductsFaultsResponse>(GET_PRODUCTS_FAULTS`${product}`);
     return response.data;
 }

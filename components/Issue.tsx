@@ -2,11 +2,14 @@ import {StyleSheet, Text, View} from "react-native";
 
 export type IssueProps = {
     reason: string;
-    count: number
+    count: number;
+    color: string
 }
 
 const countToTextMap = (num: number) => {
     switch (num) {
+        case -1:
+            return '';
         case 1:
             return `${num} zgłoszenie`;
         case 2:
@@ -22,7 +25,7 @@ export const Issue = (props: IssueProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.dotWrapper}>
-                <View style={styles.dot}/>
+                <View style={[styles.dot, { backgroundColor: props.color }]}/>
             </View>
             <View>
                 <Text style={styles.reasonText}>{props.reason}</Text>

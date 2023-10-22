@@ -3,7 +3,7 @@ import {PropsWithChildren} from "react";
 
 export type PillButtonProps = {
     onClick?: () => void;
-    error: boolean;
+    error?: boolean;
 }
 
 export const PillButton = (props: PropsWithChildren<PillButtonProps>) => {

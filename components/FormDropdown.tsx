@@ -9,6 +9,7 @@ export type FormDropdownProps = {
 export const FormDropdown = (props: FormDropdownProps) => {
     return (
         <SelectDropdown
+            defaultValueByIndex={0}
             data={props.items}
             onSelect={(i) => props.onSelect && props.onSelect(i)}
             buttonTextAfterSelection={(i, index) => i}

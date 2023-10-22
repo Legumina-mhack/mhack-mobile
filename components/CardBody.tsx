@@ -1,9 +1,13 @@
 import {PropsWithChildren} from "react";
 import {StyleSheet, View} from "react-native";
 
-export const CardBody = (props: PropsWithChildren) => {
+export type CardBodyProps = {
+    smallGap?: boolean
+}
+
+export const CardBody = (props: PropsWithChildren<CardBodyProps>) => {
     return (
-        <View style={styles.shadow1}>
+        <View style={[styles.shadow1, props.smallGap ? {marginBottom: 4} : {}]}>
             <View style={styles.shadow2}>
                 <View style={styles.container}>{props.children}</View>
             </View>
