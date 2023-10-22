@@ -3,13 +3,14 @@ import {PropsWithChildren} from "react";
 
 export type PillButtonProps = {
     onClick?: () => void;
+    error: boolean;
 }
 
 export const PillButton = (props: PropsWithChildren<PillButtonProps>) => {
     return (
         <Pressable onPress={props.onClick}>
-            <View style={styles.container}>
-                <Text style={styles.text}>
+            <View style={[styles.container, props.error ? { backgroundColor: '#ffe9e5', borderColor: '#cd291c' } : {}]}>
+                <Text style={[styles.text, props.error ? { color: '#cd291c' } : {}]}>
                     {props.children}
                 </Text>
             </View>
@@ -19,6 +20,8 @@ export const PillButton = (props: PropsWithChildren<PillButtonProps>) => {
 
 const styles = StyleSheet.create({
     container: {
+        borderWidth:  1,
+        borderColor: '#dbebfa',
         backgroundColor: '#dbebfa',
         paddingVertical: 7,
         paddingHorizontal: 16,

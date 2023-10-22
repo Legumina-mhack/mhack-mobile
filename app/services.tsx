@@ -1,7 +1,7 @@
 import {SafeAreaView, StyleSheet, View} from "react-native";
 import {Stack, useRouter} from "expo-router";
 import {HorizontalTile} from "@app/components/HorizontalTile";
-import {ChargerIcon, PlaneIcon} from "@app/components/Icons";
+import {ChargerIcon, PlaneIcon, SnowflakeIcon} from "@app/components/Icons";
 
 export default function Services() {
     const router = useRouter();
@@ -14,8 +14,9 @@ export default function Services() {
             }}/>
             <SafeAreaView style={styles.container}>
                 <View style={styles.list}>
-                    <HorizontalTile icon={PlaneIcon} text={'Zgłoś problem'} onClick={()=> router.push('/form')}/>
-                    <HorizontalTile icon={ChargerIcon} text={'Sprawdź produkt'}/>
+                    <HorizontalTile icon={PlaneIcon} text={'Zgłoś problem'} onClick={()=> router.push('/report-issue')}/>
+                    <HorizontalTile icon={ChargerIcon} text={'Sprawdź produkt'} onClick={() => router.push('/check-product')}/>
+                    <HorizontalTile icon={SnowflakeIcon} text={'Reklamacja towaru'} onClick={() => router.push('/complaint-request')}/>
                 </View>
             </SafeAreaView>
         </>

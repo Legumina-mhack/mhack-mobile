@@ -3,13 +3,16 @@ import {StyleSheet, TextInput} from "react-native";
 export type InputProps = {
     value: string;
     onChange: (text: string) => void;
-    multiline?: boolean
+    multiline?: boolean;
+    error?: boolean;
 }
 
 export const FormControl = (props: InputProps) => {
     return (
-        <TextInput style={[styles.container, props.multiline ? {height: 122} : {}]} value={props.value}
-                   onChangeText={(text) => props.onChange(text)} multiline={props.multiline}></TextInput>
+        <TextInput
+            style={[styles.container, props.error ? {borderColor: '#cd291c', marginBottom: 4} : {}, props.multiline ? {height: 122} : {}]}
+            value={props.value}
+            onChangeText={(text) => props.onChange(text)} multiline={props.multiline}></TextInput>
     )
 }
 

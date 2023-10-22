@@ -1,6 +1,6 @@
 import {SafeAreaView, ScrollView, StyleSheet, View} from "react-native";
 import {Stack, useRouter} from "expo-router";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {CardBody} from "@app/components/CardBody";
 import {FormControl} from "@app/components/FormControl";
 import {PillButton} from "@app/components/PillButton";
@@ -9,15 +9,16 @@ import {CardHeader} from "@app/components/CardHeader";
 import * as ImagePicker from 'expo-image-picker';
 import {StyledButton} from "@app/components/StyledButton";
 import {ImagePreview} from "@app/components/ImagePreview";
+import {createIssue, fetchPresignedUrls} from "@app/tools/api";
 
 
-export default function Form() {
+export default function ReportIssue() {
     const router = useRouter();
 
     const [form, setForm] = useState({
         name: '',
-        mode: '',
-        ean: '',
+        model: '',
+        serialNumber: '',
         manufacture: '',
         details: '',
         images: [] as { uri: string, fileName?: string | null }[],
@@ -44,6 +45,29 @@ export default function Form() {
         })
     }
 
+    const onSubmit = async () => {
+        const presignedUrls = (await fetchPresignedUrls(form.images.length)).map(({urlToUpload}) => urlToUpload);
+
+        try {
+            const response = await createIssue({
+                title: 'NaN',
+                description: form.details,
+                mediaUrls: [],
+                sellerName: 'NaN',
+                productName: form.name,
+                productSN: form.serialNumber,
+                productCompany: form.manufacture,
+                transactionDate: "2023-01-01T23:00:00Z",
+                consumerAddress: '12-345 From, ul. mObywatel 6',
+                email: 'from.mobywatel@example.com',
+            })
+            console.log(response);
+        } catch (e) {
+            console.log(e.response.data)
+        }
+
+    }
+
     return (
         <>
             <Stack.Screen options={{
@@ -59,9 +83,10 @@ export default function Form() {
                             <FormHeader>Nazwa produktu</FormHeader>
                             <FormControl value={form.name} onChange={(name) => onFormChange({name})}/>
                             <FormHeader>Model</FormHeader>
-                            <FormControl value={form.mode} onChange={(mode) => onFormChange({mode})}/>
-                            <FormHeader>Kod EAN</FormHeader>
-                            <FormControl value={form.ean} onChange={(ean) => onFormChange({ean})}/>
+                            <FormControl value={form.model} onChange={(model) => onFormChange({model})}/>
+                            <FormHeader>Numer seryjny</FormHeader>
+                            <FormControl value={form.serialNumber}
+                                         onChange={(serialNumber) => onFormChange({serialNumber})}/>
                             <FormHeader>Wytwórca</FormHeader>
                             <FormControl value={form.manufacture}
                                          onChange={(manufacture) => onFormChange({manufacture})}/>
@@ -82,7 +107,7 @@ export default function Form() {
                                 <PillButton onClick={pickImage}>Dodaj zdjęcie</PillButton>
                             </View>
                         </CardBody>
-                        <StyledButton variant={'blue'}>Dalej</StyledButton>
+                        <StyledButton variant={'blue'} onClick={onSubmit}>Dalej</StyledButton>
                         <StyledButton variant={'outline-blue'} onClick={() => router.back()}>Wróć</StyledButton>
                     </View>
                 </ScrollView>
