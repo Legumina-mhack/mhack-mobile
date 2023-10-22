@@ -12,7 +12,7 @@ import {ImagePreview} from "@app/components/ImagePreview";
 import {createIssue, fetchPresignedUrls} from "@app/tools/api";
 
 
-export default function ReportIssue() {
+export default function IssueReport() {
     const router = useRouter();
 
     const [form, setForm] = useState({
@@ -43,29 +43,6 @@ export default function ReportIssue() {
             ...form,
             images: [...form.images.slice(0, index), ...form.images.slice(index + 1, form.images.length)]
         })
-    }
-
-    const onSubmit = async () => {
-        const presignedUrls = (await fetchPresignedUrls(form.images.length)).map(({urlToUpload}) => urlToUpload);
-
-        try {
-            const response = await createIssue({
-                title: 'NaN',
-                description: form.details,
-                mediaUrls: [],
-                sellerName: 'NaN',
-                productName: form.name,
-                productSN: form.serialNumber,
-                productCompany: form.manufacture,
-                transactionDate: "2023-01-01T23:00:00Z",
-                consumerAddress: '12-345 From, ul. mObywatel 6',
-                email: 'from.mobywatel@example.com',
-            })
-            console.log(response);
-        } catch (e) {
-            console.log(e.response.data)
-        }
-
     }
 
     return (
@@ -107,7 +84,7 @@ export default function ReportIssue() {
                                 <PillButton onClick={pickImage}>Dodaj zdjęcie</PillButton>
                             </View>
                         </CardBody>
-                        <StyledButton variant={'blue'} onClick={onSubmit}>Dalej</StyledButton>
+                        <StyledButton variant={'blue'} onClick={() => router.replace('/issue-success')}>Dalej</StyledButton>
                         <StyledButton variant={'outline-blue'} onClick={() => router.back()}>Wróć</StyledButton>
                     </View>
                 </ScrollView>

@@ -3,6 +3,7 @@ import axios from "axios";
 const GET_PRESIGNED_URLS = (strings: TemplateStringsArray, num: number) => `/media/report/upload/${num}`
 const CREATE_ISSUE = `/report/create`
 export const GET_PRODUCTS_FAULTS = (strings: TemplateStringsArray, product: string) => encodeURI(`/report/list/products/${product}`)
+export const GET_PRODUCT_FAULTS = (strings: TemplateStringsArray, product: string) => encodeURI(`/report/list/product/${product}`)
 
 const request = axios.create({
     baseURL: 'http://172.22.151.63:3000/'
@@ -70,5 +71,15 @@ export type FetchProductsFaultsResponse = {
 
 export const fetchProductsFaults = async (product: string) => {
     const response = await request.get<FetchProductsFaultsResponse>(GET_PRODUCTS_FAULTS`${product}`);
+    return response.data;
+}
+
+export type FetchProductFaultsResponse = {
+    reason: string,
+    count: number
+}[]
+
+export const fetchProductFaults = async (product: string) => {
+    const response = await request.get<FetchProductFaultsResponse>(GET_PRODUCT_FAULTS`${product}`);
     return response.data;
 }

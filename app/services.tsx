@@ -16,7 +16,7 @@ export default function Services() {
                 <View style={styles.list}>
                     <HorizontalTile icon={FormIcon} text={'Reklamacja towaru'} onClick={() => router.push('/complaint-info')}/>
                     <HorizontalTile icon={MagnifierIcon} text={'Sprawdź produkt'} onClick={() => router.push('/product-check')}/>
-                    <HorizontalTile icon={SnowflakeIcon} text={'Zgłoś problem'} onClick={()=> router.push('/report-issue')}/>
+                    <HorizontalTile icon={SnowflakeIcon} text={'Zgłoś problem'} onClick={()=> router.push('/issue-report')}/>
                 </View>
             </SafeAreaView>
         </>

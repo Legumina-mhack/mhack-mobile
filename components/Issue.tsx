@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 export type IssueProps = {
     reason: string;
     count: number;
-    color: string
+    color?: string
 }
 
 const countToTextMap = (num: number) => {
@@ -25,7 +25,7 @@ export const Issue = (props: IssueProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.dotWrapper}>
-                <View style={[styles.dot, { backgroundColor: props.color }]}/>
+                <View style={[styles.dot, props.color ? { backgroundColor: props.color } : {}]}/>
             </View>
             <View>
                 <Text style={styles.reasonText}>{props.reason}</Text>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     dot: {
         width: 12,
         height: 12,
-        backgroundColor: '#0452a8',
+        backgroundColor: '#FFC672',
         borderRadius: 12
     },
     reasonText: {fontSize: 16, color: '#000000'},

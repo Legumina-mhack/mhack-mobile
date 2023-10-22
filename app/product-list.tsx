@@ -21,8 +21,6 @@ export default function ProductList() {
         router.push({pathname: '/product-details', params: {data: JSON.stringify(data)}})
     }
 
-    console.log('#1', {data})
-
     return (
         <>
             <Stack.Screen options={{
